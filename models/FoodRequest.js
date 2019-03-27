@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const stringToObjectId = string => mongoose.Types.ObjectId(string);
 
-const foodOfferSchema = new Schema(
+const foodRequestSchema = new Schema(
   {
     groceryItem: {
       type: Schema.Types.ObjectId,
       ref: "groceryitems",
       set: stringToObjectId
     },
-    foodSupplier: {
+    foodConsumer: {
       type: Schema.Types.ObjectId,
       ref: "users",
       set: stringToObjectId
@@ -21,7 +21,6 @@ const foodOfferSchema = new Schema(
     },
     acceptedAt: Date,
     amount: Number,
-    expiryDate: Date,
     img: String,
     description: String
   },
@@ -30,6 +29,6 @@ const foodOfferSchema = new Schema(
   }
 );
 
-const FoodOffer = mongoose.model("foodoffers", foodOfferSchema);
+const FoodOffer = mongoose.model("foodrequests", foodRequestSchema);
 
 module.exports = FoodOffer;

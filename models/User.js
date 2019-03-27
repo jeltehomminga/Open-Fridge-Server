@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const stringToObjectId = string => mongoose.Types.ObjectId(string);
 
 const userSchema = new Schema(
   {
@@ -12,7 +13,12 @@ const userSchema = new Schema(
     address: String,
     city: String,
     funFact: String,
-    img: String
+    img: String,
+    foodRequests: [ {
+        type: Schema.Types.ObjectId,
+        ref: "foodrequests",
+        set: stringToObjectId
+      }]
   },
   {
     timestamps: true

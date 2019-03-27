@@ -7,7 +7,8 @@ const GroceryItem = require("../models/GroceryItem");
 const mongoose = require("mongoose");
 var multer = require("multer");
 const upload = multer({ dest: "public/images" });
-const FoodOffer = require('../models/FoodOffer')
+const FoodOffer = require("../models/FoodOffer");
+const FoodRequest = require("../models/FoodRequest");
 
 //signup
 authRoutes.post("/signup", (req, res, next) => {
@@ -109,19 +110,16 @@ authRoutes.put("/user/:id", upload.single("profile-picture"), (req, res) => {
     res.status(400).json({ message: "Specified id is not valid" });
   } else {
     if (req.file) req.body.img = req.file.filename;
-    User.findByIdAndUpdate(req.params.id, req.body)
-      .then((response) => {
-          debugger
+    User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .then(response => {
         res.json({
-            message: `User profile with ${
-              req.params.id
-            } is updated successfully.`,
-            img: req.body.img,
-            response
-          })
-      }
-
-      )
+          message: `User profile with ${
+            req.params.id
+          } is updated successfully.`,
+          img: req.body.img,
+          response
+        });
+      })
       .catch(err => {
         res.json(err);
       });
@@ -136,13 +134,89 @@ authRoutes.get("/groceryitems", (req, res, next) => {
     .catch(err => res.json(err));
 });
 
-
-authRoutes.post('/foodoffer/:foodsupplierId', upload.single("groceryitem-picture"), (req, res, next) => {
-    debugger
-    req.body.foodSupplier = req.params.foodsupplierId
+authRoutes.post(
+  "/foodoffer",
+  upload.single("groceryitem-picture"),
+  (req, res, next) => {
+    debugger;
+    req.body.foodSupplier = req.session.passport.user;
+    if (req.file) req.body.img = req.file.filename;
     FoodOffer.create(req.body)
+      .then(response => {
+        res.json(response);
+      })
+      .catch(err => res.json(err));
+  }
+);
 
+authRoutes.post("/foodrequest", (req, res, next) => {
+  debugger;
+  req.body.foodConsumer = req.session.passport.user;
+  FoodRequest.create(req.body)
+    .then(response => {
+      debugger;
+      User.findByIdAndUpdate(req.body.foodConsumer, {
+        $push: { foodRequests: response.id }
+      }).then(result => {
+        res.json(response);
+      });
+    })
+    .catch(err => res.json(err));
+});
+
+authRoutes.get("/foodrequests", (req, res, next) => {
+  FoodRequest.find()
+    .populate("groceryItem foodConsumer")
+    .then(response => {
+      res.json(response);
+    })
+    .catch(err => res.json(err));
+});
+
+authRoutes.get("/foodoffers", (req, res, next) => {
+  FoodOffer.find()
+    .populate("groceryItem foodSupplier")
+    .then(response => {
+      res.json(response);
+    })
+    .catch(err => res.json(err));
+});
+
+authRoutes.post("/acceptoffer/:offerId", (req, res, next) => {
+  FoodOffer.findByIdAndUpdate(
+    req.params.offerId,
+    { acceptedBy: req.session.passport.user },
+    { new: true }
+  )
+    .then(response => {
+      res.json({
+        message: `Offer with ${req.params.offerId} is updated successfully.`,
+        response
+      });
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
+
+authRoutes.post("/acceptrequest/:requestId", (req, res, next) => {
     debugger
-})
+    FoodRequest.findByIdAndUpdate(
+      req.params.requestId,
+      { acceptedBy: req.session.passport.user },
+      { new: true }
+    )
+      .then(response => {
+          debugger
+        res.json({
+          message: `Request with ${req.params.requestId} is updated successfully.`,
+          response
+        });
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  });
 
 module.exports = authRoutes;
