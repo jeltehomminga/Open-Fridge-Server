@@ -40,7 +40,7 @@ require('./configs/passport');
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://open-fridge-inc.herokuapp.com"],
     credentials: true
   })
 );
