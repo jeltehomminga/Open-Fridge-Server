@@ -22,9 +22,21 @@ mongoose
     console.error("Error connecting to mongo", err);
   });
 
-app.set('view engine', 'hbs');
-app.engine('html', require('hbs').__express);
 
+
+//added Stephan's code
+// app.use(require('node-sass-middleware')({
+//   src:  path.join(__dirname, 'public'),
+//   dest: path.join(__dirname, 'public'),
+//   sourceMap: true
+// }));
+      
+
+// Handlebars
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 app.use(session({
     secret: 'sessionMonster',
@@ -40,7 +52,7 @@ require('./configs/passport');
 const cors = require("cors");
 app.use(
   cors({
-    origin: "https://open-fridge-inc.herokuapp.com/",
+    origin: ["https://open-fridge-inc.herokuapp.com/", 'http://localhost:5000'],
     credentials: true
   })
 );
@@ -52,6 +64,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public/")));
 app.use(express.static(path.join(__dirname, "public/build")));
 // app.set('views', path.join(__dirname, 'public/build'));
 
