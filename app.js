@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -11,7 +12,7 @@ const authRoutes = require('./routes/auth-routes');
 const hbs = require('hbs');
 
 mongoose
-  .connect("mongodb://localhost/Final-project", { useNewUrlParser: true })
+  .connect( process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
@@ -44,18 +45,15 @@ app.use(
   })
 );
 
-
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, "public/build")));
+// app.set('views', path.join(__dirname, 'public/build'));
 
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
