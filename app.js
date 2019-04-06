@@ -39,7 +39,7 @@ require('./configs/passport');
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["https://open-fridge-inc.herokuapp.com"],
+    origin: ["https://open-fridge-inc.herokuapp.com", 'http://localhost:3000', 'http://localhost:5000'],
     credentials: true
   })
 );
@@ -52,7 +52,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public/build")));
-// app.set('views', path.join(__dirname, 'public/build'));
+// app.set('views', path.join(__dirname, 'public'));
 
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
