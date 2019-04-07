@@ -6,7 +6,7 @@ const User = require("../models/User");
 const GroceryItem = require("../models/GroceryItem");
 const mongoose = require("mongoose");
 var multer = require("multer");
-const upload = multer({ dest: "public/images" });
+const upload = multer({ dest: "public/images/" });
 const FoodOffer = require("../models/FoodOffer");
 const FoodRequest = require("../models/FoodRequest");
 
@@ -98,6 +98,7 @@ authRoutes.get("/loggedin", (req, res, next) => {
 });
 
 authRoutes.put("/user/:id", upload.single("profile-picture"), (req, res) => {
+  debugger
   req.body.userType === "foodSupplier"
     ? (req.body.foodSupplier = true)
     : (req.body.foodSupplier = false);
