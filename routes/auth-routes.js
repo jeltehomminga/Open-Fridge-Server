@@ -9,11 +9,11 @@ var multer = require("multer");
 const upload = multer({ dest: "public/images/" });
 const FoodOffer = require("../models/FoodOffer");
 const FoodRequest = require("../models/FoodRequest");
+const salt = bcrypt.genSaltSync(10);
 
 //signup
 authRoutes.post("/signup", (req, res, next) => {
-   const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
   if (!username || !password)
     res
       .status(400)
@@ -30,13 +30,13 @@ authRoutes.post("/signup", (req, res, next) => {
           .status(400)
           .json({ message: "Username taken. Choose another one." });
       } else {
-        const salt = bcrypt.genSaltSync(10);
+
         const hashPass = bcrypt.hashSync(password, salt);
         const aNewUser = new User({
           username: username,
           password: hashPass
         });
-         aNewUser.save(err => {
+        aNewUser.save(err => {
           if (err) {
             res
               .status(400)
@@ -98,7 +98,7 @@ authRoutes.get("/loggedin", (req, res, next) => {
 });
 
 authRoutes.put("/user/:id", upload.single("profile-picture"), (req, res) => {
-  debugger
+  debugger;
   req.body.userType === "foodSupplier"
     ? (req.body.foodSupplier = true)
     : (req.body.foodSupplier = false);
@@ -160,8 +160,6 @@ authRoutes.post("/foodrequest", (req, res, next) => {
     .catch(err => res.json(err));
 });
 
-
-
 authRoutes.get("/foodoffers", (req, res, next) => {
   FoodOffer.find()
     .populate("groceryItem foodSupplier acceptedBy")
@@ -170,9 +168,6 @@ authRoutes.get("/foodoffers", (req, res, next) => {
     })
     .catch(err => res.json(err));
 });
-
-
-
 
 authRoutes.get("/foodrequests", (req, res, next) => {
   FoodRequest.find()
@@ -183,14 +178,10 @@ authRoutes.get("/foodrequests", (req, res, next) => {
     .catch(err => res.json(err));
 });
 
-
-
-
 authRoutes.post("/acceptoffer/:offerId", (req, res, next) => {
   FoodOffer.findByIdAndUpdate(
     req.params.offerId,
-    { acceptedBy: req.session.passport.user,
-      acceptedAt: Date.now()   },
+    { acceptedBy: req.session.passport.user, acceptedAt: Date.now() },
     { new: true }
   )
     .then(response => {
@@ -204,25 +195,25 @@ authRoutes.post("/acceptoffer/:offerId", (req, res, next) => {
     });
 });
 
-
 authRoutes.post("/acceptrequest/:requestId", (req, res, next) => {
-    console.log(Date.now())
-    FoodRequest.findByIdAndUpdate(
-      req.params.requestId,
-      { acceptedBy: req.session.passport.user,
-        acceptedAt: Date.now()  },
+  console.log(Date.now());
+  FoodRequest.findByIdAndUpdate(
+    req.params.requestId,
+    { acceptedBy: req.session.passport.user, acceptedAt: Date.now() },
 
-      { new: true }
-    )
-      .then(response => {
-        res.json({
-          message: `Request with ${req.params.requestId} is updated successfully.`,
-          response
-        });
-      })
-      .catch(err => {
-        res.json(err);
+    { new: true }
+  )
+    .then(response => {
+      res.json({
+        message: `Request with ${
+          req.params.requestId
+        } is updated successfully.`,
+        response
       });
-  });
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
 module.exports = authRoutes;
