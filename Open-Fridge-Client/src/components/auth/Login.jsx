@@ -26,7 +26,7 @@ class Login extends Component {
         this.setState({
           username: "",
           password: "",
-          error: error.response.data.message
+          // error: error.response.data.message
         });
         console.log(error);
       });
