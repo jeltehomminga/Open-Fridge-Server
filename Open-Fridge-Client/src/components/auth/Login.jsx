@@ -11,7 +11,6 @@ class Login extends Component {
   handleChange = e => this.setState({ [e.target.name]: e.target.value });
   handleSubmit = e => {
     e.preventDefault();
-
     this.service
       .login(this.state.username, this.state.password)
       .then(responseData => {

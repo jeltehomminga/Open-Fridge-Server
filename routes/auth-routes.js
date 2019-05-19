@@ -98,7 +98,6 @@ authRoutes.get("/loggedin", (req, res, next) => {
 });
 
 authRoutes.put("/user/:id", upload.single("profile-picture"), (req, res) => {
-  debugger;
   req.body.userType === "foodSupplier"
     ? (req.body.foodSupplier = true)
     : (req.body.foodSupplier = false);

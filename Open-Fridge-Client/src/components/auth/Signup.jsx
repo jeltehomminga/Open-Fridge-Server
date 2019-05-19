@@ -18,12 +18,10 @@ class Signup extends Component {
           username: "",
           password: ""
         });
-        debugger
         this.props.logIn({ loggedIn: true, user: responseData });
         this.props.history.push("/profile");
       })
       .catch(error => {
-        debugger
         const newError = error.response ? error.response.data.message : ""
         this.setState({
           username: "",
