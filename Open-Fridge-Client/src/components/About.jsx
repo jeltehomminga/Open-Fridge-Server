@@ -144,7 +144,7 @@ const About = props => {
             <p className='image is-64x64'>
               <img
                 src={
-                  props.user.img
+                  props.user && props.user.img
                     ? `${process.env.REACT_APP_URL}/images/${props.user.img}`
                     : `https://bulma.io/images/placeholders/128x128.png`
                 }

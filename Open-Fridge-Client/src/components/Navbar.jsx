@@ -55,7 +55,7 @@ const Navbar = props => {
             <Link className='navbar-item' to='/profile'>
               Profile
             </Link>
-            {props.user.foodConsumer ? (
+            {props.user && props.user.foodConsumer ? (
               <>
                 <Link className='navbar-item' to='/foodoffers'>
                   Food offers

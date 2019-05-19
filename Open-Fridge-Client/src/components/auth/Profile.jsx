@@ -64,7 +64,7 @@ class Profile extends Component {
       });
   };
   render() {
-    const requestsOrOffersArray = this.props.user.foodConsumer
+    const requestsOrOffersArray = this.props.user && this.props.user.foodConsumer
       ? this.state.foodRequests
       : this.state.foodOffers;
     return (
