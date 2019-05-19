@@ -1,0 +1,43 @@
+
+.App-link {
+  color: #61dafb;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+}
+
+body {
+  font-family: 'Open Sans';
+}
+
+#home-container {
+  flex-direction: row;
+}
+
+.home-item {
+  
+  padding: 25px;
+}
+
+.container-about {
+
+  flex-direction: row;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+  table {
+    font-size: 10px;
+  }
+
+  #home-container {
+    flex-direction: column-reverse;
+  }
+
+  .container-about {
+
+    flex-direction: column;
+  }
+}
