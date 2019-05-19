@@ -31,7 +31,7 @@ const App = props => {
     const { user, loggedIn } = logoutState;
     setLoggedIn(loggedIn);
     setUser(user);
-    localStorage.setItem("user", JSON.stringify({ user }));
+    localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("loggedIn", JSON.stringify(loggedIn));
   };
   useEffect(() => {
