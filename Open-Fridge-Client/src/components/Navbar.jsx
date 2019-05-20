@@ -135,7 +135,7 @@ const Navbar = props => {
   );
 
   return (
-    <div>
+    <div className='hero-head'>
       {props.loggedIn ? (
         <NavAuthenticated {...props} />
       ) : (

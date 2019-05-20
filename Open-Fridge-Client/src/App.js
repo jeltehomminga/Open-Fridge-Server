@@ -41,7 +41,6 @@ const App = props => {
   return (
     <div className='App'>
       <section className='hero is-primary is-medium is-bold is-fullheight'>
-        <div className='hero-head'>
           <Navbar
             {...props}
             loggedIn={loggedIn}
@@ -49,7 +48,6 @@ const App = props => {
             logOut={logOut}
             history={history}
           />
-        </div>
         <div className='hero-body is-bold is-paddingless is-fullheight'>
           <div className='container has-text-centered'>
             <Switch>
