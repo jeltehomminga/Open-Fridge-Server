@@ -18,7 +18,6 @@ const FoodOffers = props => {
     modal.classList.toggle("is-active");
   };
   const acceptOffer = (e, offerId) => {
-    debugger
     axios({
       method: "post",
       withCredentials: "true",
