@@ -178,6 +178,7 @@ authRoutes.get("/foodrequests", (req, res, next) => {
 });
 
 authRoutes.post("/acceptoffer/:offerId", (req, res, next) => {
+  debugger
   FoodOffer.findByIdAndUpdate(
     req.params.offerId,
     { acceptedBy: req.session.passport.user, acceptedAt: Date.now() },

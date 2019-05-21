@@ -18,6 +18,7 @@ const FoodOffers = props => {
     modal.classList.toggle("is-active");
   };
   const acceptOffer = (e, offerId) => {
+    debugger
     axios({
       method: "post",
       withCredentials: "true",
@@ -91,9 +92,11 @@ const FoodOffers = props => {
                   </div>
                   <footer className='card-footer'>
                     <p className='card-footer-item'>
-                      <span>
+                      <span
                         id={`modal-button-${index}`}
-                        onClick={e => openModal(e, index)}> Yeah, gimme!
+                        onClick={e => openModal(e, index)}
+                      >
+                        Yeah, gimme!
                       </span>
                     </p>
                   </footer>
